@@ -1,5 +1,5 @@
 package com.codecollab.service;
-
+import com.codecollab.dto.LoginRequest;
 import com.codecollab.dto.RegisterRequest;
 import com.codecollab.entity.User;
 import com.codecollab.repository.UserRepository;
@@ -33,5 +33,24 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return "User Registered Successfully";
+    }
+
+    @Override
+    public String loginUser(LoginRequest request) {
+
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if (user == null) {
+            return "User Not Found";
+        }
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
+
+            return "Invalid Password";
+        }
+
+        return "Login Successful";
     }
 }
