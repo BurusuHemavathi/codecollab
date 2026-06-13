@@ -5,6 +5,7 @@ import com.codecollab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.codecollab.dto.LoginRequest;
+import com.codecollab.dto.LoginResponse;
 
 @RestController
 @RequestMapping("/api/users")
@@ -18,7 +19,7 @@ public class UserController {
         return userService.registerUser(request);
     }
     @PostMapping("/login")
-    public String loginUser(
+    public LoginResponse loginUser(
             @RequestBody LoginRequest request) {
 
         return userService.loginUser(request);

@@ -6,6 +6,8 @@ import com.codecollab.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.codecollab.dto.LoginResponse;
+import com.codecollab.jwt.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public String registerUser(RegisterRequest request) {
@@ -36,21 +41,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String loginUser(LoginRequest request) {
+    public LoginResponse loginUser(LoginRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail());
 
         if (user == null) {
-            return "User Not Found";
+            throw new RuntimeException("User Not Found");
         }
 
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 user.getPassword())) {
 
-            return "Invalid Password";
+            throw new RuntimeException("Invalid Password");
         }
 
-        return "Login Successful";
+        String token =
+                jwtUtil.generateToken(user.getEmail());
+
+        return new LoginResponse(token);
     }
 }
