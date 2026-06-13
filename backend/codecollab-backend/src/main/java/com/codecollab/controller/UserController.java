@@ -24,4 +24,8 @@ public class UserController {
 
         return userService.loginUser(request);
     }
+    @GetMapping("/profile")
+    public String profile() {
+        return "Welcome to CodeCollab";
+    }
 }
