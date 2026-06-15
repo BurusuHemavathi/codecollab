@@ -28,6 +28,7 @@ public class RoomController {
             @RequestBody JoinRoomRequest request) {
 
         return roomService.joinRoom(
-                request.getRoomCode());
+                request.getRoomCode(),
+                request.getUserEmail());
     }
 }

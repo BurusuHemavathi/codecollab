@@ -5,11 +5,15 @@ import com.codecollab.entity.Room;
 import com.codecollab.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.codecollab.entity.RoomMember;
+import com.codecollab.repository.RoomMemberRepository;
 
 import java.util.UUID;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+    @Autowired
+    private RoomMemberRepository roomMemberRepository;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -35,7 +39,8 @@ public class RoomServiceImpl implements RoomService {
         return "Room Created Successfully. Code: " + roomCode;
     }
     @Override
-    public String joinRoom(String roomCode) {
+    public String joinRoom(String roomCode,
+                           String userEmail) {
 
         Room room =
                 roomRepository.findByRoomCode(roomCode);
@@ -43,6 +48,13 @@ public class RoomServiceImpl implements RoomService {
         if (room == null) {
             return "Room Not Found";
         }
+
+        RoomMember member = new RoomMember();
+
+        member.setRoomCode(roomCode);
+        member.setUserEmail(userEmail);
+
+        roomMemberRepository.save(member);
 
         return "Joined Room: "
                 + room.getRoomName();
