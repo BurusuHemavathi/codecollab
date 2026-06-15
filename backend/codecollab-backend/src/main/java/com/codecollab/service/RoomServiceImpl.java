@@ -2,21 +2,23 @@ package com.codecollab.service;
 
 import com.codecollab.dto.CreateRoomRequest;
 import com.codecollab.entity.Room;
+import com.codecollab.entity.RoomMember;
+import com.codecollab.repository.RoomMemberRepository;
 import com.codecollab.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.codecollab.entity.RoomMember;
-import com.codecollab.repository.RoomMemberRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class RoomServiceImpl implements RoomService {
-    @Autowired
-    private RoomMemberRepository roomMemberRepository;
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private RoomMemberRepository roomMemberRepository;
 
     @Override
     public String createRoom(CreateRoomRequest request) {
@@ -38,6 +40,7 @@ public class RoomServiceImpl implements RoomService {
 
         return "Room Created Successfully. Code: " + roomCode;
     }
+
     @Override
     public String joinRoom(String roomCode,
                            String userEmail) {
@@ -56,7 +59,12 @@ public class RoomServiceImpl implements RoomService {
 
         roomMemberRepository.save(member);
 
-        return "Joined Room: "
-                + room.getRoomName();
+        return "Joined Room: " + room.getRoomName();
+    }
+
+    @Override
+    public List<RoomMember> getRoomMembers(String roomCode) {
+
+        return roomMemberRepository.findByRoomCode(roomCode);
     }
 }

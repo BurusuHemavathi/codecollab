@@ -1,10 +1,13 @@
 package com.codecollab.controller;
 
 import com.codecollab.dto.CreateRoomRequest;
+import com.codecollab.dto.JoinRoomRequest;
+import com.codecollab.entity.RoomMember;
 import com.codecollab.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.codecollab.dto.JoinRoomRequest;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -19,10 +22,7 @@ public class RoomController {
 
         return roomService.createRoom(request);
     }
-    @GetMapping("/test")
-    public String test() {
-        return "Room Controller Working";
-    }
+
     @PostMapping("/join")
     public String joinRoom(
             @RequestBody JoinRoomRequest request) {
@@ -30,5 +30,12 @@ public class RoomController {
         return roomService.joinRoom(
                 request.getRoomCode(),
                 request.getUserEmail());
+    }
+
+    @GetMapping("/members/{roomCode}")
+    public List<RoomMember> getMembers(
+            @PathVariable String roomCode) {
+
+        return roomService.getRoomMembers(roomCode);
     }
 }
