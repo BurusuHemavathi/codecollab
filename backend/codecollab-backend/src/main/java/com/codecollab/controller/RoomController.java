@@ -4,6 +4,7 @@ import com.codecollab.dto.CreateRoomRequest;
 import com.codecollab.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.codecollab.dto.JoinRoomRequest;
 
 @RestController
 @RequestMapping("/api/rooms")
@@ -21,5 +22,12 @@ public class RoomController {
     @GetMapping("/test")
     public String test() {
         return "Room Controller Working";
+    }
+    @PostMapping("/join")
+    public String joinRoom(
+            @RequestBody JoinRoomRequest request) {
+
+        return roomService.joinRoom(
+                request.getRoomCode());
     }
 }

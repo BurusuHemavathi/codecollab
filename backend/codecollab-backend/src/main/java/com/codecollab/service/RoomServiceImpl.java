@@ -34,4 +34,17 @@ public class RoomServiceImpl implements RoomService {
 
         return "Room Created Successfully. Code: " + roomCode;
     }
+    @Override
+    public String joinRoom(String roomCode) {
+
+        Room room =
+                roomRepository.findByRoomCode(roomCode);
+
+        if (room == null) {
+            return "Room Not Found";
+        }
+
+        return "Joined Room: "
+                + room.getRoomName();
+    }
 }

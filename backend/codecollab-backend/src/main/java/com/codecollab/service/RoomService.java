@@ -5,4 +5,5 @@ import com.codecollab.dto.CreateRoomRequest;
 public interface RoomService {
 
     String createRoom(CreateRoomRequest request);
+    String joinRoom(String roomCode);
 }
