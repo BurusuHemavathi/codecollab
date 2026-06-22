@@ -15,9 +15,7 @@ public class CodeExecutionServiceImpl
 
             File file = new File("Main.java");
 
-            FileWriter writer =
-                    new FileWriter(file);
-
+            FileWriter writer = new FileWriter(file);
             writer.write(code);
             writer.close();
 
@@ -34,25 +32,25 @@ public class CodeExecutionServiceImpl
                             )
                     );
 
-            StringBuilder errorOutput =
+            StringBuilder compileErrors =
                     new StringBuilder();
 
             String line;
 
-            while ((line = compileError.readLine())
-                    != null) {
-
-                errorOutput.append(line)
+            while ((line = compileError.readLine()) != null) {
+                compileErrors.append(line)
                         .append("\n");
             }
 
-            if (!errorOutput.isEmpty()) {
-                return errorOutput.toString();
+            if (!compileErrors.isEmpty()) {
+                return compileErrors.toString();
             }
 
             Process runProcess =
                     Runtime.getRuntime()
                             .exec("java Main");
+
+            runProcess.waitFor();
 
             BufferedReader outputReader =
                     new BufferedReader(
@@ -61,14 +59,31 @@ public class CodeExecutionServiceImpl
                             )
                     );
 
+            BufferedReader errorReader =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    runProcess.getErrorStream()
+                            )
+                    );
+
             StringBuilder output =
                     new StringBuilder();
 
-            while ((line = outputReader.readLine())
-                    != null) {
+            StringBuilder runtimeErrors =
+                    new StringBuilder();
 
+            while ((line = outputReader.readLine()) != null) {
                 output.append(line)
                         .append("\n");
+            }
+
+            while ((line = errorReader.readLine()) != null) {
+                runtimeErrors.append(line)
+                        .append("\n");
+            }
+
+            if (!runtimeErrors.isEmpty()) {
+                return runtimeErrors.toString();
             }
 
             return output.toString();
