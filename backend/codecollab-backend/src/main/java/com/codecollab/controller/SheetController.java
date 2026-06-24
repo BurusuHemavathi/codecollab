@@ -5,6 +5,8 @@ import com.codecollab.entity.Sheet;
 import com.codecollab.service.SheetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.codecollab.dto.AddSheetItemRequest;
+import com.codecollab.entity.SheetItem;
 
 import java.util.List;
 
@@ -26,5 +28,19 @@ public class SheetController {
     public List<Sheet> getAllSheets() {
 
         return sheetService.getAllSheets();
+    }
+
+    @PostMapping("/item")
+    public String addItem(
+            @RequestBody AddSheetItemRequest request) {
+
+        return sheetService.addItem(request);
+    }
+
+    @GetMapping("/{sheetId}/items")
+    public List<SheetItem> getItems(
+            @PathVariable Long sheetId) {
+
+        return sheetService.getItemsBySheet(sheetId);
     }
 }
