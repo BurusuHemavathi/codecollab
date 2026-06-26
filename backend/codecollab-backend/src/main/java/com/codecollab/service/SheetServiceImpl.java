@@ -6,6 +6,11 @@ import com.codecollab.entity.Sheet;
 import com.codecollab.entity.SheetItem;
 import com.codecollab.repository.SheetRepository;
 import com.codecollab.repository.SheetItemRepository;
+import com.codecollab.dto.ProgressRequest;
+import com.codecollab.entity.UserProgress;
+import com.codecollab.repository.UserProgressRepository;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,9 @@ import java.util.List;
 
 @Service
 public class SheetServiceImpl implements SheetService {
+
+    @Autowired
+    private UserProgressRepository userProgressRepository;
 
     @Autowired
     private SheetRepository sheetRepository;
@@ -59,5 +67,81 @@ public class SheetServiceImpl implements SheetService {
     public List<SheetItem> getItemsBySheet(Long sheetId) {
 
         return sheetItemRepository.findBySheetId(sheetId);
+    }
+
+    @Override
+    public String markComplete(ProgressRequest request) {
+
+        Optional<UserProgress> existing =
+                userProgressRepository
+                        .findByUserEmailAndItemId(
+                                request.getUserEmail(),
+                                request.getItemId()
+                        );
+
+        UserProgress progress;
+
+        if (existing.isPresent()) {
+
+            progress = existing.get();
+
+        } else {
+
+            progress = new UserProgress();
+
+            progress.setUserEmail(
+                    request.getUserEmail());
+
+            progress.setItemId(
+                    request.getItemId());
+        }
+
+        progress.setCompleted(true);
+
+        userProgressRepository.save(progress);
+
+        return "Item Marked Complete";
+    }
+
+    @Override
+    public String bookmarkItem(ProgressRequest request) {
+
+        Optional<UserProgress> existing =
+                userProgressRepository
+                        .findByUserEmailAndItemId(
+                                request.getUserEmail(),
+                                request.getItemId()
+                        );
+
+        UserProgress progress;
+
+        if (existing.isPresent()) {
+
+            progress = existing.get();
+
+        } else {
+
+            progress = new UserProgress();
+
+            progress.setUserEmail(
+                    request.getUserEmail());
+
+            progress.setItemId(
+                    request.getItemId());
+        }
+
+        progress.setBookmarked(true);
+
+        userProgressRepository.save(progress);
+
+        return "Item Bookmarked";
+    }
+
+    @Override
+    public List<UserProgress> getUserProgress(
+            String userEmail) {
+
+        return userProgressRepository
+                .findByUserEmail(userEmail);
     }
 }
