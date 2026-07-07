@@ -9,4 +9,9 @@ public interface RoomMemberRepository
         extends JpaRepository<RoomMember, Long> {
 
     List<RoomMember> findByRoomCode(String roomCode);
+
+    void deleteByRoomCodeAndUserEmail(
+            String roomCode,
+            String userEmail
+    );
 }

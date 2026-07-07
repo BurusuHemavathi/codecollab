@@ -46,7 +46,9 @@ public class RoomServiceImpl implements RoomService {
                            String userEmail) {
 
         Room room =
-                roomRepository.findByRoomCode(roomCode);
+                roomRepository
+                        .findByRoomCode(roomCode)
+                        .orElse(null);
 
         if (room == null) {
             return "Room Not Found";

@@ -8,7 +8,8 @@ import com.codecollab.repository.RoomSheetRepository;
 import com.codecollab.repository.UserProgressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.codecollab.entity.Room;
+import com.codecollab.repository.RoomRepository;
 import java.util.List;
 
 @Service
@@ -24,6 +25,9 @@ public class RoomDashboardServiceImpl
     @Autowired
     private UserProgressRepository userProgressRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
+
     @Override
     public RoomDashboardResponse getDashboard(
             String roomCode) {
@@ -38,9 +42,12 @@ public class RoomDashboardServiceImpl
 
         response.setTotalMembers(members.size());
 
-        if (!members.isEmpty()) {
-            response.setLeader(
-                    members.get(0).getUserEmail());
+        Room room = roomRepository
+                .findByRoomCode(roomCode)
+                .orElse(null);
+
+        if (room != null) {
+            response.setLeader(room.getCreatedBy());
         }
 
         RoomSheet roomSheet =
