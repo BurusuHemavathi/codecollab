@@ -17,4 +17,12 @@ public interface UserProgressRepository
     List<UserProgress> findByUserEmail(
             String userEmail
     );
+
+    long countByUserEmailAndCompletedTrue(
+            String userEmail
+    );
+
+    long countByUserEmailAndBookmarkedTrue(
+            String userEmail
+    );
 }
