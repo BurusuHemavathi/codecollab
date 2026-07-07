@@ -144,4 +144,11 @@ public class SheetServiceImpl implements SheetService {
         return userProgressRepository
                 .findByUserEmail(userEmail);
     }
+
+    @Override
+    public List<SheetItem> searchItems(String keyword) {
+
+        return sheetItemRepository
+                .findByTitleContainingIgnoreCase(keyword);
+    }
 }

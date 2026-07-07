@@ -24,4 +24,6 @@ public interface SheetService {
 
     List<UserProgress> getUserProgress(String userEmail);
 
+    List<SheetItem> searchItems(String keyword);
+
 }

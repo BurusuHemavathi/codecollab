@@ -9,4 +9,7 @@ public interface SheetItemRepository
         extends JpaRepository<SheetItem, Long> {
 
     List<SheetItem> findBySheetId(Long sheetId);
+
+    List<SheetItem> findByTitleContainingIgnoreCase(String title);
+
 }

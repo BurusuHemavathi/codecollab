@@ -69,4 +69,11 @@ public class SheetController {
         return sheetService
                 .getUserProgress(email);
     }
+
+    @GetMapping("/search")
+    public List<SheetItem> searchItems(
+            @RequestParam String keyword) {
+
+        return sheetService.searchItems(keyword);
+    }
 }
