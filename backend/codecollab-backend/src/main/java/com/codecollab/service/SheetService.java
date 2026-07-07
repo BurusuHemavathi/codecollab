@@ -26,4 +26,8 @@ public interface SheetService {
 
     List<SheetItem> searchItems(String keyword);
 
+    String deleteSheet(Long sheetId);
+
+    String deleteItem(Long itemId);
+
 }

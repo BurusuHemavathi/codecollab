@@ -74,6 +74,24 @@ public class SheetController {
     public List<SheetItem> searchItems(
             @RequestParam String keyword) {
 
-        return sheetService.searchItems(keyword);
+        return sheetService
+                .searchItems(keyword);
     }
+
+    @DeleteMapping("/{sheetId}")
+    public String deleteSheet(
+            @PathVariable Long sheetId) {
+
+        return sheetService
+                .deleteSheet(sheetId);
+    }
+
+    @DeleteMapping("/item/{itemId}")
+    public String deleteItem(
+            @PathVariable Long itemId) {
+
+        return sheetService
+                .deleteItem(itemId);
+    }
+
 }

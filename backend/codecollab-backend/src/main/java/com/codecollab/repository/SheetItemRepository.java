@@ -10,6 +10,7 @@ public interface SheetItemRepository
 
     List<SheetItem> findBySheetId(Long sheetId);
 
-    List<SheetItem> findByTitleContainingIgnoreCase(String title);
+    List<SheetItem> findByTitleContainingIgnoreCase(
+            String keyword);
 
 }

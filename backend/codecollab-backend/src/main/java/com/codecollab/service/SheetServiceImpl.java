@@ -145,10 +145,31 @@ public class SheetServiceImpl implements SheetService {
                 .findByUserEmail(userEmail);
     }
 
+
     @Override
-    public List<SheetItem> searchItems(String keyword) {
+    public List<SheetItem> searchItems(
+            String keyword) {
 
         return sheetItemRepository
                 .findByTitleContainingIgnoreCase(keyword);
+    }
+
+    @Override
+    public String deleteSheet(
+            Long sheetId) {
+
+        sheetRepository.deleteById(sheetId);
+
+        return "Sheet Deleted Successfully";
+    }
+
+    @Override
+    public String deleteItem(
+            Long itemId) {
+
+        sheetItemRepository
+                .deleteById(itemId);
+
+        return "Item Deleted Successfully";
     }
 }
