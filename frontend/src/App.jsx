@@ -1,18 +1,29 @@
-import axios from "axios";
+import { Routes, Route } from "react-router-dom";
 
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-});
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import MainLayout from "./components/layout/MainLayout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-api.interceptors.request.use((config) => {
+function App() {
+  return (
+    <Routes>
 
-  const token = localStorage.getItem("token");
+      <Route path="/" element={<Login />} />
 
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+      <Route path="/register" element={<Register />} />
 
-  return config;
-});
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      />
 
-export default api;
+    </Routes>
+  );
+}
+
+export default App;
