@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import MainLayout from "./components/layout/MainLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Rooms from "./pages/Rooms/Rooms";
 
 function App() {
   return (
@@ -21,6 +22,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+    path="/rooms"
+    element={
+        <ProtectedRoute>
+            <Rooms/>
+        </ProtectedRoute>
+    }
+/>
 
     </Routes>
   );

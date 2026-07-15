@@ -1,6 +1,6 @@
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../../services/api";
 
 function Login() {
@@ -21,24 +21,35 @@ function Login() {
   };
 
   const handleLogin = async () => {
+
+    // IMPORTANT
+    console.log("Sending Login Data :", loginData);
+
     try {
       const response = await api.post("/api/users/login", loginData);
 
-   localStorage.setItem("token", response.data.token);
-localStorage.setItem("email", loginData.email);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", loginData.email);
 
       alert("Login Successful");
 
       navigate("/dashboard");
+
     } catch (error) {
-      alert("Invalid Email or Password");
+
+      console.log("Axios Error :", error);
+      console.log("Response :", error.response);
+      console.log("Response Data :", error.response?.data);
+
+      alert(error.response?.data?.message || "Login Failed");
     }
   };
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      {/* Left Section */}
+
       <div className="w-1/2 flex flex-col justify-center px-20">
+
         <h1 className="text-6xl font-bold text-white mb-6">
           CodeCollab
         </h1>
@@ -52,17 +63,19 @@ localStorage.setItem("email", loginData.email);
           <br />
           Collaborate in real-time.
         </p>
+
       </div>
 
-      {/* Right Section */}
       <div className="w-1/2 flex items-center justify-center">
+
         <div className="w-[430px] bg-slate-900 rounded-3xl p-10 shadow-2xl">
-          <h2 className="text-4xl text-white font-bold mb-8 text-center">
+
+          <h2 className="text-4xl font-bold text-white text-center mb-8">
             Login
           </h2>
 
-          {/* Email */}
           <div className="relative mb-6">
+
             <Mail
               className="absolute left-4 top-4 text-gray-400"
               size={20}
@@ -74,12 +87,13 @@ localStorage.setItem("email", loginData.email);
               value={loginData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full bg-slate-800 rounded-xl py-4 pl-12 pr-4 text-white outline-none border border-slate-700 focus:border-blue-500"
+              className="w-full bg-slate-800 rounded-xl py-4 pl-12 pr-4 text-white border border-slate-700 outline-none focus:border-blue-500"
             />
+
           </div>
 
-          {/* Password */}
           <div className="relative mb-6">
+
             <Lock
               className="absolute left-4 top-4 text-gray-400"
               size={20}
@@ -91,7 +105,7 @@ localStorage.setItem("email", loginData.email);
               value={loginData.password}
               onChange={handleChange}
               placeholder="Password"
-              className="w-full bg-slate-800 rounded-xl py-4 pl-12 pr-12 text-white outline-none border border-slate-700 focus:border-blue-500"
+              className="w-full bg-slate-800 rounded-xl py-4 pl-12 pr-12 text-white border border-slate-700 outline-none focus:border-blue-500"
             />
 
             <button
@@ -105,24 +119,30 @@ localStorage.setItem("email", loginData.email);
                 <Eye size={20} />
               )}
             </button>
+
           </div>
 
-          {/* Login Button */}
           <button
             onClick={handleLogin}
-            className="w-full bg-blue-600 hover:bg-blue-700 transition-all rounded-xl py-4 text-white font-bold text-lg"
+            className="w-full bg-blue-600 hover:bg-blue-700 transition rounded-xl py-4 text-white font-bold"
           >
             Login
           </button>
 
           <p className="text-center text-gray-400 mt-6">
-            Don't have an account?
-            <span className="text-blue-500 cursor-pointer ml-2">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-blue-500 hover:underline"
+            >
               Register
-            </span>
+            </Link>
           </p>
+
         </div>
+
       </div>
+
     </div>
   );
 }
